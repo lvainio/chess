@@ -33,7 +33,7 @@ export default {
   },
 
   data: () => ({
-    board: [], // 2D-array representing the board.
+    board: null,
     selectedPiece: {
       rowIndex: null,
       colIndex: null,
@@ -58,16 +58,19 @@ export default {
      */
     generateBoard() {
       const types = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
-      this.board = [
-        Array.from({ length: 8 }, (_, i) => ({ piece: { type: types[i], color: "black" } })),
-        Array.from({ length: 8 }, () => ({ piece: { type: "pawn", color: "black" } })),
-        Array.from({ length: 8 }, () => ({ piece: null })),
-        Array.from({ length: 8 }, () => ({ piece: null })),
-        Array.from({ length: 8 }, () => ({ piece: null })),
-        Array.from({ length: 8 }, () => ({ piece: null })),
-        Array.from({ length: 8 }, () => ({ piece: { type: "pawn", color: "white" } })),
-        Array.from({ length: 8 }, (_, i) => ({ piece: { type: types[i], color: "white" } }))
-      ];
+
+      this.board = new Array(8).fill(null).map((_, rowIndex) => {
+        const color = rowIndex < 2 ? "black" : "white";
+        return new Array(8).fill(null).map((_, colIndex) => {
+          if (rowIndex === 0 || rowIndex === 7) {
+            return { piece: { color, type: types[colIndex] } };
+          } else if (rowIndex === 1 || rowIndex === 6) {
+            return { piece: { color, type: "pawn" } };
+          } else {
+            return { piece: null };
+          }
+        });
+      });
     },
 
     /**

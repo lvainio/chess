@@ -37,6 +37,7 @@ export default {
   },
 
   // implement websocket thing to check for wins.
+  // TODO: we need websocket rooms for each game. 
 
   data: () => ({
     whitePlayer: "",
